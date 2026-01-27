@@ -44,9 +44,4 @@
 - VS Code
 - Git & GitHub
 
----
-
-## 👤 Author
-**Ripal Patel**  
-Web Development Student  
 
