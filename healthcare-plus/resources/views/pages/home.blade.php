@@ -134,7 +134,7 @@
   </div>
 </section>
 
-{{-- CREATIVE SECTION BEFORE FOOTER --}}
+{{-- Contact info section --}}
 <section class="py-5">
   <div class="container">
     <div class="p-4 p-md-5 rounded-4 text-white" style="background: #1565C0;">
