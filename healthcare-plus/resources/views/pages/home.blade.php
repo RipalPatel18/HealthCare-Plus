@@ -82,7 +82,7 @@
   </div>
 </section>
 
-{{-- OUR SERVICES (smaller height cards) --}}
+{{-- OUR SERVICES -}}
 <section class="py-5">
   <div class="container">
     <h2 class="text-center fw-bold section-title mb-2">Our Services</h2>
