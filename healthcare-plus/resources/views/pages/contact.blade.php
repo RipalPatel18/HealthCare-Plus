@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-5">
   <h2 class="fw-bold mb-2">Contact Us</h2>
-  <p class="text-muted">We’ll reply within 24 hours.</p>
+  <!-- <p class="text-muted">We’ll reply within 24 hours.</p> -->
 
   <div class="row g-4 mt-3">
     <div class="col-md-6">
