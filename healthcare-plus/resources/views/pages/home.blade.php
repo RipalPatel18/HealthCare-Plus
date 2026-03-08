@@ -4,9 +4,9 @@
 
   <!-- Hero Section  -->
   <section class="hero-section d-flex align-items-center" style="background:
-                  url('{{ asset('images/hero-doctor.jpg') }}') center center / cover no-repeat;">
-                  <!-- Background Image: https://www.freepik.com/free-photo/artistic-blurry-colorful-wallpaper-background_38064988.htm#fromView=search&page=1&position=11&uuid=aaa9e71d-23bf-42d5-a886-71e46a11e4a6&query=light+blue+and+white+background -->
-                  <!-- Doctor Image : https://www.freepik.com/free-psd/doctor-preparing-routine-medical-check_44989994.htm#fromView=search&page=1&position=12&uuid=f3b05630-f764-4be4-88ba-be4bcc238b33&query=doctor+image -->
+                    url('{{ asset('images/hero-doctor.jpg') }}') center center / cover no-repeat;">
+    <!-- Background Image: https://www.freepik.com/free-photo/artistic-blurry-colorful-wallpaper-background_38064988.htm#fromView=search&page=1&position=11&uuid=aaa9e71d-23bf-42d5-a886-71e46a11e4a6&query=light+blue+and+white+background -->
+    <!-- Doctor Image : https://www.freepik.com/free-psd/doctor-preparing-routine-medical-check_44989994.htm#fromView=search&page=1&position=12&uuid=f3b05630-f764-4be4-88ba-be4bcc238b33&query=doctor+image -->
     <div class="container text-primary">
       <div class="row">
         <div class="col-lg-6">
@@ -99,7 +99,7 @@
               <p class="text-muted small mb-3">
                 Heart screenings, diagnostics, and personalized treatment plans.
               </p>
-              <a href="{{ url('/services#cardiology') }}" class="service-link">Learn More →</a>
+
             </div>
           </div>
         </div>
@@ -116,7 +116,7 @@
               <p class="text-muted small mb-3">
                 Specialized care for infants, children, and adolescents.
               </p>
-              <a href="{{ url('/services#pediatrics') }}" class="service-link">Learn More →</a>
+
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@
               <p class="text-muted small mb-3">
                 Bone, joint, and muscle care including injury recovery support.
               </p>
-              <a href="{{ url('/services#orthopedics') }}" class="service-link">Learn More →</a>
+
             </div>
           </div>
         </div>

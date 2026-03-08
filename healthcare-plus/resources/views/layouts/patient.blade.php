@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Patient - HealthCare Plus')</title>
 
-    {{-- Bootstrap --}}
+   <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    {{-- Icons --}}
+   <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
@@ -48,7 +48,7 @@
             background: var(--hc-primary-dark);
         }
 
-        /* Footer (same as your site footer colors) */
+        /* Footer */
         .footer {
             background: #0B1220;
             color: rgba(255, 255, 255, .85);
@@ -100,7 +100,7 @@
 
 <body>
 
-    {{-- Patient Navbar (NOT public menu) --}}
+   <!-- Patient Navbar -->
     <nav class="navbar navbar-expand-lg border-bottom py-3">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{{ url('/patient/dashboard') }}">
