@@ -38,15 +38,6 @@
   </div>
 </section>
 
-      <div class="col-lg-6">
-        <img
-          src="{{ asset('images/hero-doctor.png') }}"
-          class="img-fluid rounded-4 shadow"
-          style="height:420px;width:100%;object-fit:cover;"
-          alt="Doctor">
-      </div>
-    </div>
-  </div>
-</section>
+     
 </body>
 </html>

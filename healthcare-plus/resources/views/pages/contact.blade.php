@@ -10,6 +10,7 @@
         <p class="text-muted mb-0">We’re here to help. Send us a message anytime.</p>
       </div>
 
+      <!-- Submitted Form with sucess message-->
       @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm" role="alert">
           {{ session('success') }}
@@ -29,13 +30,16 @@
                 <p class="text-muted mb-0">Fill out the form below and our team will get back to you soon.</p>
               </div>
 
+              <!-- Post Request -->
               <form method="POST" action="{{ route('contact.send') }}">
                 @csrf
 
                 <div class="row g-4">
 
+
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Full Name</label>
+
                     <input type="text" name="name" class="form-control rounded-3" placeholder="Enter your full name">
                   </div>
 
@@ -60,6 +64,7 @@
                 <div class="mt-4">
                   <button type="submit" class="btn btn-primary px-4 py-2 rounded-3">
                     <i class="bi bi-send me-2"></i>Send Message
+
                   </button>
                 </div>
               </form>
@@ -71,6 +76,7 @@
         <!-- Contact Info -->
         <div class="col-lg-5">
           <div class="service-card h-100">
+
             <div class="p-4 p-md-5">
 
               <h4 class="fw-bold mb-4">Contact Information</h4>
@@ -82,13 +88,16 @@
                 <div>
                   <h6 class="fw-semibold mb-1">Phone</h6>
                   <p class="text-muted mb-0">+1 (647) 123-4567</p>
+
                 </div>
               </div>
 
               <div class="d-flex align-items-start gap-3 mb-4">
+
                 <div class="fs-4 text-primary">
                   <i class="bi bi-envelope-fill"></i>
                 </div>
+
                 <div>
                   <h6 class="fw-semibold mb-1">Email</h6>
                   <p class="text-muted mb-0">support@healthcareplus.com</p>
@@ -97,9 +106,13 @@
 
               <div class="d-flex align-items-start gap-3 mb-4">
                 <div class="fs-4 text-primary">
+
                   <i class="bi bi-geo-alt-fill"></i>
                 </div>
+
+
                 <div>
+
                   <h6 class="fw-semibold mb-1">Address</h6>
                   <p class="text-muted mb-0">Toronto, ON, Canada</p>
                 </div>
@@ -108,7 +121,9 @@
               <div class="d-flex align-items-start gap-3">
                 <div class="fs-4 text-primary">
                   <i class="bi bi-clock-fill"></i>
+
                 </div>
+
                 <div>
                   <h6 class="fw-semibold mb-1">Hours</h6>
                   <p class="text-muted mb-1">Mon - Fri: 8:00 AM - 6:00 PM</p>
@@ -118,6 +133,7 @@
 
             </div>
           </div>
+
         </div>
 
       </div>

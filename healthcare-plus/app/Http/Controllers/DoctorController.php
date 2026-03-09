@@ -6,30 +6,35 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Department;
 
+
 class DoctorController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::where('role', 'doctor')->with('department');
+        $departments = Department::all();
 
-        if ($request->filled('specialty')) {
-            $query->where('department_id', $request->specialty);
-        }
+        $doctors = User::where('role', 'doctor')
+            ->with('department')
 
-        if ($request->filled('location')) {
+            ->when($request->specialty, function ($query) use ($request) {
+                $query->where('department_id', $request->specialty);
+
+            })
+            ->when($request->location, function ($query) use ($request) {
+               
             $query->where('location', 'like', '%' . $request->location . '%');
-        }
-
-        $doctors = $query->get();
-        $departments = Department::orderBy('name')->get();
+            })
+            ->get();
 
         return view('find-doctor', compact('doctors', 'departments'));
     }
 
     public function show($id)
+
     {
         $doctor = User::where('role', 'doctor')
             ->with('department')
+
             ->findOrFail($id);
 
         return view('doctor-profile', compact('doctor'));

@@ -9,6 +9,7 @@ class HealthRecord extends Model
 {
     use HasFactory;
 
+    //databse
     protected $fillable = [
         'patient_id',
         'doctor_id',
@@ -19,12 +20,14 @@ class HealthRecord extends Model
     ];
 
     public function patient()
+
     {
         return $this->belongsTo(User::class, 'patient_id');
     }
 
     public function doctor()
     {
+        
         return $this->belongsTo(User::class, 'doctor_id');
     }
 }

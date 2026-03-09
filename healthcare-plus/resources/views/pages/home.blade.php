@@ -157,8 +157,10 @@
             <h3 class="fw-bold mb-2">Need help booking an appointment?</h3>
             <p class="mb-0" style="opacity:.9;">
               Our support team can help you find the right doctor and schedule faster.
+              
             </p>
           </div>
+
           <div class="col-md-4 text-md-end">
             <a href="{{ url('/contact') }}" class="btn btn-light px-4">Contact Us</a>
             <a href="{{ url('/find-doctor') }}" class="btn btn-outline-light px-4 ms-2">Browse Doctors</a>
