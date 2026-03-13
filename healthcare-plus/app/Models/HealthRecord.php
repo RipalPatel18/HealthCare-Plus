@@ -2,15 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class HealthRecord extends Model
 {
-    use HasFactory;
-
-    //databse
     protected $fillable = [
+        'user_id',
         'patient_id',
         'doctor_id',
         'record_type',
@@ -19,15 +17,13 @@ class HealthRecord extends Model
         'details',
     ];
 
-    public function patient()
-
-    {
-        return $this->belongsTo(User::class, 'patient_id');
-    }
-
     public function doctor()
     {
-        
         return $this->belongsTo(User::class, 'doctor_id');
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(User::class, 'patient_id');
     }
 }

@@ -8,49 +8,49 @@ use App\Models\User;
 
 class AppointmentController extends Controller
 {
-    public function index()
+    public function create()
     {
-        $doctors = User::where('role', 'doctor')
-            ->with('department')
+        $doctors = User::where('role', 'doctor')->get();
 
-            ->orderBy('name')
-            ->get();
 
+        
         return view('pages.book-appointment', compact('doctors'));
     }
 
     public function store(Request $request)
     {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login first.');
+        }
+
         $request->validate([
-            'patient_name' => 'required',
-            'email' => 'required|email',
-            'doctor' => 'required',
 
-            'appointment_date' => 'required',
-            'time_slot' => 'required',
 
-            'phone' => 'required',
-
+            'doctor' => 'required|string|max:255',
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'time_slot' => 'required|string|max:100',
+            'phone' => 'required|string|max:20',
+            'notes' => 'nullable|string|max:1000',
         ]);
 
+        $user = auth()->user();
+
         Appointment::create([
-            
-            'patient_name' => $request->patient_name,
-
-            'email' => $request->email,
+            'user_id' => $user->id,
+            'patient_name' => $user->name,
+            'email' => $user->email,
             'doctor' => $request->doctor,
-
+            'department' => $request->department ?? null,
             'appointment_date' => $request->appointment_date,
             'time_slot' => $request->time_slot,
             'phone' => $request->phone,
             'notes' => $request->notes,
-
-
+            'status' => 'Upcoming',
         ]);
 
+        return redirect()->route('patient.appointments')
 
 
-
-        return redirect()->back()->with('success', 'Appointment booked successfully!');
+            ->with('success', 'Appointment booked successfully.');
     }
 }

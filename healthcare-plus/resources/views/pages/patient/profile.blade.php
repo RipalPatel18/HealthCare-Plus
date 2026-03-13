@@ -1,8 +1,10 @@
 @extends('layouts.site')
 
+@section('title', 'Patient Profile')
+
 @section('content')
 
-<section class="py-5">
+<section class="py-5" style="background:#f4f8fb;">
     <div class="container">
 
         <div class="mb-4">
@@ -95,7 +97,6 @@
             </div>
 
         </div>
-
     </div>
 </section>
 
