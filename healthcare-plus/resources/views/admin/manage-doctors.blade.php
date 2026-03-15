@@ -5,79 +5,108 @@
 @section('content')
 <div class="container py-5">
 
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-      <h2 class="fw-bold mb-1">Manage Doctors</h2>
-      <p class="text-muted mb-0">Add, edit, and remove doctor profiles.</p>
+    <h2 class="fw-bold mb-4">Manage Doctors</h2>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+            <div class="mb-4">
+                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                    Add Doctor
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="py-3 ps-4 text-center">Name</th>
+                            <th class="py-3 text-center">Specialty</th>
+                            <th class="py-3 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($doctors as $doctor)
+                            <tr>
+                                <td class="ps-4 text-center">{{ $doctor->name }}</td>
+                                <td class="text-center">{{ $doctor->department->name ?? '—' }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('admin.manage-doctors.edit', $doctor->id) }}"
+                                       class="btn btn-success btn-sm">Edit</a>
+                                    <form method="POST"
+                                          action="{{ route('admin.manage-doctors.delete', $doctor->id) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('Delete this doctor?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm ms-1">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-5 text-muted">No doctors found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+</div>
 
-    <a href="{{ url('/admin/manage-doctors/create') }}" class="btn btn-primary">
-      <i class="bi bi-plus-lg me-1"></i> Add Doctor
-    </a>
-  </div>
-
-  <div class="card border-0 shadow-sm rounded-4">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light">
-            <tr>
-              <th class="py-3 ps-4">Doctor</th>
-              <th class="py-3">Specialty</th>
-              <th class="py-3">Email</th>
-              <th class="py-3">Status</th>
-              <th class="py-3 text-end pe-4">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {{-- Demo rows (DB later) --}}
-            <tr>
-              <td class="ps-4 fw-semibold">Dr. Sarah Johnson</td>
-              <td>Cardiology</td>
-              <td>sarah@healthcareplus.com</td>
-              <td><span class="badge text-bg-success">Active</span></td>
-              <td class="text-end pe-4">
-                <a href="{{ url('/admin/manage-doctors/1/edit') }}" class="btn btn-outline-dark btn-sm">Edit</a>
-                <a href="{{ url('/admin/manage-doctors/1/delete') }}" class="btn btn-outline-danger btn-sm ms-1">Delete</a>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-4 fw-semibold">Dr. Amit Patel</td>
-              <td>Dermatology</td>
-              <td>amit@healthcareplus.com</td>
-              <td><span class="badge text-bg-success">Active</span></td>
-              <td class="text-end pe-4">
-                <a href="{{ url('/admin/manage-doctors/2/edit') }}" class="btn btn-outline-dark btn-sm">Edit</a>
-                <a href="{{ url('/admin/manage-doctors/2/delete') }}" class="btn btn-outline-danger btn-sm ms-1">Delete</a>
-              </td>
-            </tr>
-
-            <tr>
-              <td class="ps-4 fw-semibold">Dr. Emma Lee</td>
-              <td>Pediatrics</td>
-              <td>emma@healthcareplus.com</td>
-              <td><span class="badge text-bg-secondary">Inactive</span></td>
-              <td class="text-end pe-4">
-                <a href="{{ url('/admin/manage-doctors/3/edit') }}" class="btn btn-outline-dark btn-sm">Edit</a>
-                <a href="{{ url('/admin/manage-doctors/3/delete') }}" class="btn btn-outline-danger btn-sm ms-1">Delete</a>
-              </td>
-            </tr>
-
-            {{-- No data state later --}}
-            {{--
-            <tr>
-              <td colspan="5" class="text-center py-5 text-muted">
-                No doctors found.
-              </td>
-            </tr>
-            --}}
-          </tbody>
-        </table>
-      </div>
+<!-- Add Doctor Modal -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-semibold">Add New Doctor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="{{ route('admin.manage-doctors.create') }}">
+                    @csrf
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Dr. John Smith" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="doctor@example.com" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Min 8 characters" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Department</label>
+                            <select name="department_id" class="form-select">
+                                <option value="">— Select Department —</option>
+                                @foreach($departments as $dept)
+                                    <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Phone</label>
+                            <input type="text" name="phone" class="form-control" placeholder="+1 647 000 0000">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Address</label>
+                            <input type="text" name="address" class="form-control" placeholder="Clinic address">
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">Add Doctor</button>
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-
 </div>
 @endsection

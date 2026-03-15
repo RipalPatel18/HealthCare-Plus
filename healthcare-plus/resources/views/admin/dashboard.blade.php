@@ -5,76 +5,49 @@
 @section('content')
 <div class="container py-5">
 
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-      <h2 class="fw-bold mb-1">Admin Dashboard</h2>
-      <p class="text-muted mb-0">Manage doctors, services, departments, and patients.</p>
-    </div>
-  </div>
+    <h2 class="fw-bold mb-4">Admin Dashboard</h2>
 
-  <div class="row g-4">
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-    <div class="col-md-6 col-lg-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
+   <!-- Stats -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
         <div class="card-body p-4">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <h6 class="text-muted mb-1">Doctors</h6>
-              <h3 class="fw-bold mb-0">12</h3>
+            <h5 class="fw-semibold mb-4">Today's Overview</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card border rounded-3 p-3">
+                        <div class="fw-bold fs-3">{{ $totalPatients }}</div>
+                        <div class="text-muted">Total Patients</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border rounded-3 p-3">
+                        <div class="fw-bold fs-3">{{ $totalDoctors }}</div>
+                        <div class="text-muted">Total Doctors</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border rounded-3 p-3">
+                        <div class="fw-bold fs-3">{{ $totalAppointments }}</div>
+                        <div class="text-muted">Total Appointments</div>
+                    </div>
+                </div>
             </div>
-            <i class="bi bi-person-badge fs-2 text-primary"></i>
-          </div>
-          <a href="{{ url('/admin/manage-doctors') }}" class="btn btn-outline-dark btn-sm mt-3">Manage</a>
         </div>
-      </div>
     </div>
 
-    <div class="col-md-6 col-lg-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
+ <!-- Quick Actions -->
+    <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-4">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <h6 class="text-muted mb-1">Services</h6>
-              <h3 class="fw-bold mb-0">18</h3>
+            <h5 class="fw-semibold mb-4">Quick Actions</h5>
+            <div class="d-flex gap-3 flex-wrap">
+                <a href="{{ route('admin.manage-doctors') }}" class="btn btn-primary px-4">Manage Doctors</a>
+                <a href="{{ route('admin.manage-services') }}" class="btn btn-success px-4">Manage Services</a>
             </div>
-            <i class="bi bi-hospital fs-2 text-primary"></i>
-          </div>
-          <a href="{{ url('/admin/manage-services') }}" class="btn btn-outline-dark btn-sm mt-3">Manage</a>
         </div>
-      </div>
     </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <h6 class="text-muted mb-1">Departments</h6>
-              <h3 class="fw-bold mb-0">6</h3>
-            </div>
-            <i class="bi bi-diagram-3 fs-2 text-primary"></i>
-          </div>
-          <a href="{{ url('/admin/manage-departments') }}" class="btn btn-outline-dark btn-sm mt-3">Manage</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="card border-0 shadow-sm rounded-4 h-100">
-        <div class="card-body p-4">
-          <div class="d-flex align-items-center justify-content-between">
-            <div>
-              <h6 class="text-muted mb-1">Patients</h6>
-              <h3 class="fw-bold mb-0">45</h3>
-            </div>
-            <i class="bi bi-people fs-2 text-primary"></i>
-          </div>
-          <a href="{{ url('/admin/delete-patients') }}" class="btn btn-outline-danger btn-sm mt-3">Delete</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
 
 </div>
 @endsection

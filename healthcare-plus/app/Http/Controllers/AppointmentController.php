@@ -8,49 +8,44 @@ use App\Models\User;
 
 class AppointmentController extends Controller
 {
+    // Show the book appointment form with list of doctors
     public function create()
     {
         $doctors = User::where('role', 'doctor')->get();
 
-
-        
         return view('pages.book-appointment', compact('doctors'));
     }
 
+    // Save the new appointment to the database
     public function store(Request $request)
     {
-        if (!auth()->check()) {
-            return redirect()->route('login')->with('error', 'Please login first.');
-        }
-
         $request->validate([
-
-
-            'doctor' => 'required|string|max:255',
-            'appointment_date' => 'required|date|after_or_equal:today',
-            'time_slot' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'notes' => 'nullable|string|max:1000',
+            'doctor'           => 'required|string',
+            'appointment_date' => 'required|date',
+            'time_slot'        => 'required|string',
+            'phone'            => 'required|string',
         ]);
 
         $user = auth()->user();
 
+        // If user is not logged in, send them to the login page
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Please login first to book an appointment.');
+        }
+
+        // Create the appointment using the logged in user's info
         Appointment::create([
-            'user_id' => $user->id,
-            'patient_name' => $user->name,
-            'email' => $user->email,
-            'doctor' => $request->doctor,
-            'department' => $request->department ?? null,
+            'user_id'          => $user->id,
+            'patient_name'     => $user->name,
+            'email'            => $user->email,
+            'doctor'           => $request->doctor,
             'appointment_date' => $request->appointment_date,
-            'time_slot' => $request->time_slot,
-            'phone' => $request->phone,
-            'notes' => $request->notes,
-            'status' => 'Upcoming',
+            'time_slot'        => $request->time_slot,
+            'phone'            => $request->phone,
+            'notes'            => $request->notes,
+            'status'           => 'upcoming',
         ]);
 
-        return redirect()->route('patient.appointments')
-
-
-            ->with('success', 'Appointment booked successfully.');
+        return redirect()->route('patient.appointments')->with('success', 'Appointment booked successfully!');
     }
 }

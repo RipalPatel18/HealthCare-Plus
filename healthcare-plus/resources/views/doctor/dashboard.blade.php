@@ -4,7 +4,9 @@
 
 @section('content')
 <div class="container py-5">
-  <h2 class="fw-bold mb-2">Doctor Dashboard</h2>
-  <p class="text-muted mb-0">Welcome! Manage your appointments and availability.</p>
+  <div class="card border-0 shadow-sm rounded-4 p-4">
+    <h2 class="fw-bold mb-2">Welcome back, {{ auth()->user()->name }} </h2>
+    <p class="text-muted mb-0">Manage your appointments and availability.</p>
+  </div>
 </div>
 @endsection

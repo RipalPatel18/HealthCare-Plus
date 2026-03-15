@@ -9,7 +9,7 @@
   <!-- fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-   <!-- Bootstrap  -->
+  <!-- Bootstrap  -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Icons  -->
@@ -367,28 +367,32 @@
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav mx-auto gap-lg-3">
 
-          {{-- Public links --}}
-          <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/find-doctor') }}">Find Doctor</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/book-appointment') }}">Book appointment</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}">Contact Us</a></li>
-
-          {{-- Patient dashboard links (only after login) --}}
           @auth
             @if(auth()->user()->role === 'patient')
               <li class="nav-item"><a class="nav-link" href="{{ url('/patient/dashboard') }}">Dashboard</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url('/patient/appointments') }}">Appointments</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url('/patient/records') }}">Health Records</a></li>
               <li class="nav-item"><a class="nav-link" href="{{ url('/patient/profile') }}">Profile</a></li>
+            @else
+              <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url('/find-doctor') }}">Find Doctor</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}">Services</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url('/book-appointment') }}">Book Appointment</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}">Contact Us</a></li>
             @endif
+          @else
+            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/find-doctor') }}">Find Doctor</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/services') }}">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/book-appointment') }}">Book Appointment</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url('/contact') }}">Contact Us</a></li>
           @endauth
 
         </ul>
 
         <div class="d-flex gap-2">
           @auth
-            <a class="btn btn-outline-dark" href="{{ url('/dashboard') }}">Dashboard</a>
+            <!-- <a class="btn btn-outline-dark" href="{{ url('/dashboard') }}">Dashboard</a> -->
 
             <form method="POST" action="{{ route('logout') }}">
               @csrf

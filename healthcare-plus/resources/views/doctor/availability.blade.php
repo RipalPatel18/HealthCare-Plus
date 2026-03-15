@@ -5,50 +5,96 @@
 @section('content')
 <div class="container py-5">
 
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-      <h2 class="fw-bold mb-1">Manage Availability</h2>
-      <p class="text-muted mb-0">Set your available time slots.</p>
-    </div>
-  </div>
+    <h2 class="fw-bold mb-4">Doctor Availability</h2>
 
-  <div class="card border-0 shadow-sm rounded-4">
-    <div class="card-body">
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-      <form>
-        <div class="row g-4">
-
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Day</label>
-            <select class="form-select">
-              <option>Monday</option>
-              <option>Tuesday</option>
-              <option>Wednesday</option>
-              <option>Thursday</option>
-              <option>Friday</option>
-            </select>
-          </div>
-
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">Start Time</label>
-            <input type="time" class="form-control">
-          </div>
-
-          <div class="col-md-4">
-            <label class="form-label fw-semibold">End Time</label>
-            <input type="time" class="form-control">
-          </div>
-
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 
-        <div class="mt-4">
-          <button class="btn btn-primary px-4">Save Availability</button>
+ <!-- Add Availability -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-semibold mb-4">Add Availability</h5>
+
+            <form method="POST" action="{{ route('doctor.availability.store') }}">
+                @csrf
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Day</label>
+                        <select name="day" class="form-select">
+                            <option value="">Select Day</option>
+                            @foreach(['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] as $day)
+                                <option value="{{ $day }}" {{ old('day') === $day ? 'selected' : '' }}>{{ $day }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Start Time</label>
+                        <input type="time" name="start_time" value="{{ old('start_time') }}" class="form-control">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">End Time</label>
+                        <input type="time" name="end_time" value="{{ old('end_time') }}" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-dark px-4">Add slot</button>
+                </div>
+            </form>
         </div>
-
-      </form>
-
     </div>
-  </div>
+
+   <!-- Current Availability -->
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 pb-0">
+            <h5 class="fw-semibold mb-3">Current Availability</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="py-3 ps-4">Day</th>
+                        <th class="py-3 text-center">Time</th>
+                        <th class="py-3 text-end pe-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($availabilities as $slot)
+                        <tr>
+                            <td class="ps-4 fw-semibold">{{ $slot->day }}</td>
+                            <td class="text-center">
+                                {{ \Carbon\Carbon::parse($slot->start_time)->format('g:i A') }} - {{ \Carbon\Carbon::parse($slot->end_time)->format('g:i A') }}
+                            </td>
+                            <td class="text-end pe-4">
+                                <form method="POST" action="{{ route('doctor.availability.delete', $slot->id) }}" class="d-inline" onsubmit="return confirm('Remove this slot?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-outline-dark btn-sm">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-5 text-muted">No availability set yet.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
 @endsection

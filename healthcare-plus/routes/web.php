@@ -5,6 +5,8 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\AdminController;
 
 /* Web Routes */
 
@@ -18,8 +20,6 @@ Route::get('/dashboard', function () {
     return redirect('/redirect');
 })->middleware(['auth'])->name('dashboard');
 
-
-
 // Dynamic pages
 Route::get('/find-doctor', [DoctorController::class, 'index'])->name('find-doctor');
 Route::get('/doctor-profile/{id}', [DoctorController::class, 'show'])->name('doctor-profile');
@@ -28,14 +28,12 @@ Route::get('/services', [ServiceController::class, 'index'])->name('services');
 Route::get('/departments/{id}', [ServiceController::class, 'showDepartment'])->name('department.show');
 Route::get('/services/{id}', [ServiceController::class, 'show'])->name('service.show');
 
-Route::get('/book-appointment', [AppointmentController::class, 'index'])->name('book-appointment');
-Route::post('/book-appointment', [AppointmentController::class, 'store'])->name('book-appointment.store');
-Route::get('/doctor/appointments', [AppointmentController::class, 'doctorAppointments'])->name('doctor.appointments');
+Route::get('/book-appointment', [AppointmentController::class, 'create'])->name('book-appointment');
+Route::post('/book-appointment', [AppointmentController::class, 'store'])->middleware('auth')->name('book-appointment.store');
 
 Route::get('/department/{id}', [DepartmentController::class, 'show'])->name('department.show');
 
 // Static pages
-
 Route::get('/contact', function () {
     return view('pages.contact');
 })->name('contact');
@@ -44,7 +42,7 @@ Route::post('/contact', function () {
     return back()->with('success', 'Your message has been sent successfully!');
 })->name('contact.send');
 
-/* Redirect user by role after login */
+/* Redirect by role after login */
 Route::get('/redirect', function () {
     $role = auth()->user()->role;
 
@@ -59,87 +57,59 @@ Route::get('/redirect', function () {
     return redirect()->route('patient.dashboard');
 })->middleware(['auth'])->name('redirect');
 
-/* Protected routes */
-Route::middleware(['auth'])->group(function () {
+/* Patient Routes */
+Route::middleware(['auth'])->prefix('patient')->name('patient.')->group(function () {
+    Route::get('/dashboard', [PatientController::class, 'dashboard'])->name('dashboard');
+    Route::get('/appointments', [PatientController::class, 'appointments'])->name('appointments');
+    Route::get('/records', [PatientController::class, 'records'])->name('records');
+    Route::get('/profile', [PatientController::class, 'profile'])->name('profile');
 
-    /* Patient Routes */
-    Route::get('/patient/dashboard', function () {
-        return view('pages.patient.dashboard');
-    })->name('patient.dashboard');
+    Route::post('/profile/update', [PatientController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/password/update', [PatientController::class, 'updatePassword'])->name('password.update');
+    Route::post('/appointments/{id}/cancel', [PatientController::class, 'cancelAppointment'])->name('appointments.cancel');
+});
 
-    Route::get('/patient/profile', function () {
-        return view('pages.patient.profile');
-    })->name('patient.profile');
+/* Doctor Routes */
+Route::middleware(['auth'])->prefix('doctor')->name('doctor.')->group(function () {
+    Route::get('/dashboard', [DoctorController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/patient/appointments', function () {
-        return view('pages.patient.appointments');
-    })->name('patient.appointments');
+    Route::get('/appointments', [DoctorController::class, 'appointments'])->name('appointments');
+    Route::patch('/appointments/{id}/confirm', [DoctorController::class, 'confirmAppointment'])->name('appointments.confirm');
+    Route::patch('/appointments/{id}/cancel', [DoctorController::class, 'cancelAppointment'])->name('appointments.cancel');
 
-    Route::get('/patient/records', function () {
-        return view('pages.patient.records');
-    })->name('patient.records');
+    Route::get('/availability', [DoctorController::class, 'availability'])->name('availability');
+    Route::post('/availability', [DoctorController::class, 'storeAvailability'])->name('availability.store');
+    Route::delete('/availability/{id}', [DoctorController::class, 'deleteAvailability'])->name('availability.delete');
 
-    /* Doctor Routes */
-    Route::get('/doctor/dashboard', function () {
-        return view('doctor.dashboard');
-    })->name('doctor.dashboard');
+    Route::get('/profile', [DoctorController::class, 'profile'])->name('profile');
+    Route::patch('/profile/update', [DoctorController::class, 'updateProfile'])->name('profile.update');
+    Route::patch('/password/update', [DoctorController::class, 'updatePassword'])->name('password.update');
+});
 
-    Route::get('/doctor/appointments', function () {
-        return view('doctor.appointments');
-    })->name('doctor.appointments');
+/* Admin Routes */
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('/doctor/availability', function () {
-        return view('doctor.availability');
-    })->name('doctor.availability');
+    Route::get('/manage-doctors', [AdminController::class, 'manageDoctors'])->name('manage-doctors');
+    Route::post('/manage-doctors', [AdminController::class, 'createDoctor'])->name('manage-doctors.create');
+    Route::get('/manage-doctors/{id}/edit', [AdminController::class, 'editDoctor'])->name('manage-doctors.edit');
+    Route::patch('/manage-doctors/{id}', [AdminController::class, 'updateDoctor'])->name('manage-doctors.update');
+    Route::delete('/manage-doctors/{id}', [AdminController::class, 'deleteDoctor'])->name('manage-doctors.delete');
 
-    Route::get('/doctor/profile', function () {
-        return view('doctor.profile');
-    })->name('doctor.profile');
+    Route::get('/manage-services', [AdminController::class, 'manageServices'])->name('manage-services');
+    Route::post('/manage-services', [AdminController::class, 'createService'])->name('manage-services.create');
+    Route::delete('/manage-services/{id}', [AdminController::class, 'deleteService'])->name('manage-services.delete');
 
-    /* Admin Routes */
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/manage-departments', [AdminController::class, 'manageDepartments'])->name('manage-departments');
+    Route::post('/manage-departments', [AdminController::class, 'createDepartment'])->name('manage-departments.create');
+    Route::delete('/manage-departments/{id}', [AdminController::class, 'deleteDepartment'])->name('manage-departments.delete');
 
-    Route::get('/admin/manage-doctors', function () {
-        return view('admin.manage-doctors');
-    })->name('admin.manage-doctors');
+    Route::get('/delete-patients', [AdminController::class, 'deletePatients'])->name('delete-patients');
 
-    Route::get('/admin/manage-doctors/create', function () {
-        return view('admin.manage-doctors-create');
-    })->name('admin.manage-doctors.create');
+    Route::delete('/delete-patients/{id}', [AdminController::class, 'deletePatient'])->name('delete-patients.destroy');
 
-    Route::get('/admin/manage-doctors/{id}/edit', function ($id) {
-        return view('admin.manage-doctors-edit', ['id' => $id]);
-    })->name('admin.manage-doctors.edit');
-
-    Route::get('/admin/manage-doctors/{id}/delete', function ($id) {
-        return view('admin.manage-doctors-delete', ['id' => $id]);
-    })->name('admin.manage-doctors.delete');
-
-    Route::get('/admin/manage-services', function () {
-        return view('admin.manage-services');
-    })->name('admin.manage-services');
-
-    Route::get('/admin/manage-services/create', function () {
-        return view('admin.manage-services-create');
-    })->name('admin.manage-services.create');
-
-    Route::get('/admin/manage-departments', function () {
-        return view('admin.manage-departments');
-    })->name('admin.manage-departments');
-
-    Route::get('/admin/departments/create', function () {
-        return view('admin.departments-create');
-    })->name('admin.departments.create');
-
-    Route::get('/admin/delete-patients', function () {
-        return view('admin.delete-patients');
-    })->name('admin.delete-patients');
-
-    Route::get('/admin/delete-patients/{id}/confirm', function ($id) {
-        return view('admin.delete-patients-confirm', ['id' => $id]);
-    })->name('admin.delete-patients.confirm');
+    Route::patch('/manage-services/{id}', [AdminController::class, 'updateService'])->name('manage-services.update');
+    Route::patch('/manage-departments/{id}', [AdminController::class, 'updateDepartment'])->name('manage-departments.update');
 });
 
 require __DIR__ . '/auth.php';

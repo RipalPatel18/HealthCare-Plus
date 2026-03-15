@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,35 +10,99 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <style>
-    :root{
-      --hc-primary:#1E88E5;
-      --hc-primary-dark:#1565C0;
-      --hc-light:#F4F8FB;
-      --hc-dark:#1A1A1A;
+    :root {
+      --hc-primary: #1E88E5;
+      --hc-primary-dark: #1565C0;
+      --hc-light: #F4F8FB;
+      --hc-dark: #1A1A1A;
     }
-    body{ background:var(--hc-light); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-    .navbar{ background:#fff!important; }
-    .navbar .nav-link{ font-weight:500; color:#1A1A1A; transition:.2s ease; position:relative; }
-    .navbar .nav-link:hover{ color:var(--hc-primary); }
-    .navbar .nav-link.active{ color:var(--hc-primary); font-weight:700; }
-    .btn-primary{ background:var(--hc-primary); border:solid 1px #083a74; }
-    .btn-primary:hover{ background:var(--hc-primary-dark); }
 
-    .footer{ background:#0B1220; color:rgba(255,255,255,.85); }
-    .footer-brand{ font-weight:700; font-size:18px; color:#fff; }
-    .footer-title{ font-weight:600; margin-bottom:14px; color:#fff; }
-    .footer-text{ color:rgba(255,255,255,.65); font-size:14px; }
-    .footer-links li{ margin-bottom:8px; }
-    .footer-links a{ text-decoration:none; color:rgba(255,255,255,.65); font-size:14px; transition:.2s ease; }
-    .footer-links a:hover{ color:#fff; padding-left:4px; }
-    .footer-divider{ border-color:rgba(255,255,255,.08); }
-    .footer-bottom{ font-size:13px; color:rgba(255,255,255,.55); }
+    body {
+      background: var(--hc-light);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .navbar {
+      background: #fff !important;
+    }
+
+    .navbar .nav-link {
+      font-weight: 500;
+      color: #1A1A1A;
+      transition: .2s ease;
+      position: relative;
+    }
+
+    .navbar .nav-link:hover {
+      color: var(--hc-primary);
+    }
+
+    .navbar .nav-link.active {
+      color: var(--hc-primary);
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: var(--hc-primary);
+      border: solid 1px #083a74;
+    }
+
+    .btn-primary:hover {
+      background: var(--hc-primary-dark);
+    }
+
+    .footer {
+      background: #0B1220;
+      color: rgba(255, 255, 255, .85);
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .footer-title {
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #fff;
+    }
+
+    .footer-text {
+      color: rgba(255, 255, 255, .65);
+      font-size: 14px;
+    }
+
+    .footer-links li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: rgba(255, 255, 255, .65);
+      font-size: 14px;
+      transition: .2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+      padding-left: 4px;
+    }
+
+    .footer-divider {
+      border-color: rgba(255, 255, 255, .08);
+    }
+
+    .footer-bottom {
+      font-size: 13px;
+      color: rgba(255, 255, 255, .55);
+    }
   </style>
 </head>
 
 <body>
 
-  {{-- Admin Navbar --}}
+ <!-- Admin Navbar -->
   <nav class="navbar navbar-expand-lg bg-white border-bottom py-3">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{{ url('/admin/dashboard') }}">
@@ -52,19 +117,20 @@
       <div class="collapse navbar-collapse" id="navAdmin">
         <ul class="navbar-nav mx-auto gap-lg-3">
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="{{ url('/admin/dashboard') }}">Dashboard</a>
+            <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
+              href="{{ url('/admin/dashboard') }}">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('admin/manage-doctors*') ? 'active' : '' }}" href="{{ url('/admin/manage-doctors') }}">Manage Doctors</a>
+            <a class="nav-link {{ request()->is('admin/manage-doctors*') ? 'active' : '' }}"
+              href="{{ url('/admin/manage-doctors') }}">Manage Doctors</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('admin/manage-services*') ? 'active' : '' }}" href="{{ url('/admin/manage-services') }}">Manage Services</a>
+            <a class="nav-link {{ request()->is('admin/manage-services*') ? 'active' : '' }}"
+              href="{{ url('/admin/manage-services') }}">Manage Services</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ request()->is('admin/manage-departments*') ? 'active' : '' }}" href="{{ url('/admin/manage-departments') }}">Manage Departments</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {{ request()->is('admin/delete-patients*') ? 'active' : '' }}" href="{{ url('/admin/delete-patients') }}">Delete Patients</a>
+            <a class="nav-link {{ request()->is('admin/delete-patients*') ? 'active' : '' }}"
+              href="{{ url('/admin/delete-patients') }}">Delete Patients</a>
           </li>
         </ul>
 
@@ -129,4 +195,5 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

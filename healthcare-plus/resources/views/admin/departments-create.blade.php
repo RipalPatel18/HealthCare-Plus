@@ -17,7 +17,7 @@
   <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-4 p-md-5">
 
-      {{-- DB later --}}
+      
       <form action="#" method="POST">
         @csrf
 
