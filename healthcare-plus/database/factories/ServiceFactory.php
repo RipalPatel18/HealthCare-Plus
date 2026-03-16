@@ -20,7 +20,6 @@ class ServiceFactory extends Factory
             'MRI Scan',
             'Blood Test',
             'Physical Therapy',
-
             'Dental Cleaning',
             'Vaccination',
             'Health Screening',

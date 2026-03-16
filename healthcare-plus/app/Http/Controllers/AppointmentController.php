@@ -11,13 +11,16 @@ class AppointmentController extends Controller
     // Show the book appointment form with list of doctors
     public function create()
     {
+
         $doctors = User::where('role', 'doctor')->get();
 
         return view('pages.book-appointment', compact('doctors'));
+
     }
 
     // Save the new appointment to the database
     public function store(Request $request)
+
     {
         $request->validate([
             'doctor'           => 'required|string',
@@ -28,10 +31,12 @@ class AppointmentController extends Controller
 
         $user = auth()->user();
 
+
         // If user is not logged in, send them to the login page
         if (!$user) {
             return redirect()->route('login')->with('error', 'Please login first to book an appointment.');
         }
+
 
         // Create the appointment using the logged in user's info
         Appointment::create([
@@ -45,6 +50,7 @@ class AppointmentController extends Controller
             'notes'            => $request->notes,
             'status'           => 'upcoming',
         ]);
+        
 
         return redirect()->route('patient.appointments')->with('success', 'Appointment booked successfully!');
     }

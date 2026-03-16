@@ -112,7 +112,7 @@
 
     /* Hero Section */
     .hero-section {
-      height: 530px;
+      height: 600px;
       width: 100%;
       display: flex;
       align-items: center;
@@ -139,6 +139,47 @@
     .hero-section .lead {
       font-size: 24px;
       color: rgba(15, 23, 42, .75) !important;
+    }
+
+    /* -- Mobile (max 768px) -- */
+    @media (max-width: 768px) {
+      .hero-section {
+        height: auto;
+        padding: 60px 0;
+        background-image: none !important;
+        text-align: center;
+      }
+
+      .hero-section h1 {
+        font-size: 36px;
+      }
+
+      .hero-section .lead {
+        font-size: 18px;
+      }
+    }
+
+    /* -- Tablet (max 991px) -- */
+    @media (max-width: 991px) {
+      .hero-section {
+        height: auto;
+        padding: 50px 0;
+        background-size: 300px auto;
+        background-position: right bottom;
+      }
+
+      .hero-section h1 {
+        font-size: 46px;
+      }
+
+      .hero-section .lead {
+        font-size: 20px;
+      }
+
+      .d-flex.gap-2 {
+        margin-top: 12px;
+        flex-direction: column;
+      }
     }
 
     /* Services */

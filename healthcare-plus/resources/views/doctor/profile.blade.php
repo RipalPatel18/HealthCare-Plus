@@ -12,6 +12,7 @@
         </div>
     </div>
 
+
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
@@ -21,6 +22,7 @@
     @endif
 
     <div class="row g-4">
+
 
         <!-- Profile Information -->
         <div class="col-lg-7">
@@ -48,6 +50,7 @@
                                 <input type="text" name="phone" class="form-control" value="{{ old('phone', $doctor->phone) }}" placeholder="e.g., +1 647 123 4567">
                             </div>
 
+
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Department</label>
                                 <select name="department_id" class="form-select">
@@ -64,9 +67,11 @@
                                 <label class="form-label fw-semibold">Clinic Address</label>
                                 <input type="text" name="address" class="form-control" value="{{ old('address', $doctor->address) }}" placeholder="Enter your clinic address">
                             </div>
+
                         </div>
 
                         <div class="mt-4">
+                            
                             <button type="submit" class="btn btn-primary px-4">
                                 Update Profile
                             </button>

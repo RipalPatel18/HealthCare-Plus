@@ -5,6 +5,7 @@
 @section('content')
 <div class="container py-5">
 
+
     <h2 class="fw-bold mb-4">Admin Dashboard</h2>
 
     @if(session('success'))
@@ -21,19 +22,28 @@
                         <div class="fw-bold fs-3">{{ $totalPatients }}</div>
                         <div class="text-muted">Total Patients</div>
                     </div>
+
+
                 </div>
+
+
                 <div class="col-md-4">
                     <div class="card border rounded-3 p-3">
                         <div class="fw-bold fs-3">{{ $totalDoctors }}</div>
                         <div class="text-muted">Total Doctors</div>
                     </div>
+
+
                 </div>
+
                 <div class="col-md-4">
                     <div class="card border rounded-3 p-3">
                         <div class="fw-bold fs-3">{{ $totalAppointments }}</div>
                         <div class="text-muted">Total Appointments</div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -49,5 +59,7 @@
         </div>
     </div>
 
+
+    
 </div>
 @endsection

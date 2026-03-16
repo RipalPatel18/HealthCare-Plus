@@ -5,6 +5,7 @@
 @section('content')
 <div class="container py-5">
 
+
   <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
     <div>
       <h2 class="fw-bold mb-1 text-danger">Delete Doctor</h2>
@@ -15,6 +16,7 @@
       <i class="bi bi-arrow-left me-1"></i> Back
     </a>
   </div>
+
 
   <div class="card border-0 shadow-sm rounded-4">
     <div class="card-body p-5 text-center">
@@ -37,6 +39,7 @@
         <button type="button" class="btn btn-danger px-4">
           Yes, Delete
         </button>
+        
       </div>
 
     </div>

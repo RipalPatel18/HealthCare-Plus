@@ -16,14 +16,17 @@ class DoctorController extends Controller
     {
         $doctor = Auth::user();
 
+
         // Get all appointments for this doctor
         $appointments = Appointment::where('doctor', $doctor->name)
             ->orderBy('appointment_date')
+
             ->get();
 
         // Count appointments by status
         $upcoming  = $appointments->where('status', 'Upcoming')->count();
         $today     = $appointments
+
             ->where('status', 'Upcoming')
             ->where('appointment_date', today()->toDateString())
             ->count();
@@ -33,37 +36,47 @@ class DoctorController extends Controller
         // Get last 5 appointments to show in the dashboard table
         $recentAppointments = Appointment::where('doctor', $doctor->name)
             ->orderByDesc('appointment_date')
+
             ->limit(5)
             ->get();
 
         return view('doctor.dashboard', compact(
+
+
             'doctor', 'upcoming', 'today', 'cancelled', 'total', 'recentAppointments'
         ));
     }
 
     // Show all appointments for the logged in doctor
     public function appointments()
+
     {
         $doctor = Auth::user();
+
 
         $appointments = Appointment::where('doctor', $doctor->name)
             ->orderBy('appointment_date')
             ->get();
+
+
 
         return view('doctor.appointments', compact('appointments'));
     }
 
     // Confirm an appointment
     public function confirmAppointment($id)
+
     {
         $appointment = Appointment::findOrFail($id);
 
-        // Make sure this appointment belongs to the logged in doctor
+        // appointment belongs to the logged in doctor
         $this->authorizeDoctorAppointment($appointment);
+
 
         $appointment->update(['status' => 'Confirmed']);
 
         return back()->with('success', 'Appointment confirmed.');
+
     }
 
     // Cancel an appointment
@@ -71,24 +84,27 @@ class DoctorController extends Controller
     {
         $appointment = Appointment::findOrFail($id);
 
-        // Make sure this appointment belongs to the logged in doctor
+        // appointment belongs to the logged in doctor
         $this->authorizeDoctorAppointment($appointment);
 
         $appointment->update(['status' => 'Cancelled']);
 
+
         return back()->with('success', 'Appointment cancelled.');
     }
 
-    // Check that the appointment belongs to the logged in doctor
+
     private function authorizeDoctorAppointment(Appointment $appointment)
     {
         if ($appointment->doctor !== Auth::user()->name) {
+
             abort(403);
         }
     }
 
     // Show availability page with existing slots
     public function availability()
+
     {
         $doctor = Auth::user();
 
@@ -98,11 +114,13 @@ class DoctorController extends Controller
             ->get();
 
         return view('doctor.availability', compact('doctor', 'availabilities'));
+
     }
 
-    // Save a new availability slot (or update if day already exists)
+    // Save a new availability slot 
     public function storeAvailability(Request $request)
     {
+
         $request->validate([
             'day'        => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
             'start_time' => 'required',
@@ -120,8 +138,9 @@ class DoctorController extends Controller
 
     // Delete an availability slot
     public function deleteAvailability($id)
+
     {
-        // Make sure the slot belongs to the logged in doctor before deleting
+       
         DoctorAvailability::where('id', $id)
             ->where('doctor_id', Auth::id())
             ->firstOrFail()
@@ -132,6 +151,7 @@ class DoctorController extends Controller
 
     // Show profile page
     public function profile()
+
     {
         $doctor      = Auth::user();
         $departments = Department::orderBy('name')->get();
@@ -139,7 +159,7 @@ class DoctorController extends Controller
         return view('doctor.profile', compact('doctor', 'departments'));
     }
 
-    // Update profile info (name, email, phone, address, department, image)
+    // Update profile info 
     public function updateProfile(Request $request)
     {
         $doctor = Auth::user();
@@ -153,11 +173,13 @@ class DoctorController extends Controller
             'image'         => 'nullable|image|max:2048',
         ]);
 
+
         $data = $request->only('name', 'email', 'phone', 'address', 'department_id');
 
         // If a new image was uploaded, store it and save the filename
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('doctors', 'public');
+
             $data['image'] = basename($path);
         }
 
@@ -172,6 +194,7 @@ class DoctorController extends Controller
         $request->validate([
             'current_password' => 'required',
             'password'         => 'required|min:8|confirmed',
+
         ]);
 
         $doctor = Auth::user();
@@ -184,6 +207,7 @@ class DoctorController extends Controller
         $doctor->update(['password' => Hash::make($request->password)]);
 
         return back()->with('success', 'Password updated successfully.');
+
     }
 
     // Show find a doctor page with search and filter
@@ -195,6 +219,7 @@ class DoctorController extends Controller
         // Filter by specialty (department) if selected
         if ($request->filled('specialty')) {
             $query->where('department_id', $request->specialty);
+
         }
 
         // Filter by location if entered
@@ -206,6 +231,7 @@ class DoctorController extends Controller
         $departments = Department::orderBy('name')->get();
 
         return view('pages.find-doctor', compact('doctors', 'departments'));
+
     }
 
     // Show a single doctor profile page
@@ -214,6 +240,7 @@ class DoctorController extends Controller
         $doctor = \App\Models\User::where('role', 'doctor')
             ->with('department')
             ->findOrFail($id);
+            
 
         return view('pages.doctor-profile', compact('doctor'));
     }

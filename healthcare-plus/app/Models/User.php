@@ -13,16 +13,22 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password',
-        'role', 'phone', 'address',
-        'department_id', 'location', 'image',
+        'name',
+        'email',
+        'password',
+        'role',
+        'phone',
+        'address',
+        'department_id',
+        'location',
+        'image',
     ];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password'          => 'hashed',
+        'password' => 'hashed',
     ];
 
     public function department()
@@ -40,14 +46,8 @@ class User extends Authenticatable
         return $this->hasMany(Appointment::class, 'user_id');
     }
 
-    /** Resolve profile image URL with a fallback avatar */
-    public function getImageUrlAttribute(): string
-    {
-        if ($this->image) {
-            return asset('storage/doctors/' . $this->image);
-        }
 
-        $seed = urlencode($this->name);
-        return "https://ui-avatars.com/api/?name={$seed}&background=0d6efd&color=fff&size=200";
-    }
+
+
+
 }

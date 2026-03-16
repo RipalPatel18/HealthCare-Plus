@@ -36,6 +36,7 @@
                                 <td class="text-center">
                                     <a href="{{ route('admin.manage-doctors.edit', $doctor->id) }}"
                                        class="btn btn-success btn-sm">Edit</a>
+
                                     <form method="POST"
                                           action="{{ route('admin.manage-doctors.delete', $doctor->id) }}"
                                           class="d-inline"
@@ -44,6 +45,8 @@
                                         @method('DELETE')
                                         <button class="btn btn-danger btn-sm ms-1">Delete</button>
                                     </form>
+
+
                                 </td>
                             </tr>
                         @empty
@@ -51,6 +54,8 @@
                                 <td colspan="3" class="text-center py-5 text-muted">No doctors found.</td>
                             </tr>
                         @endforelse
+
+
                     </tbody>
                 </table>
             </div>
@@ -109,4 +114,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

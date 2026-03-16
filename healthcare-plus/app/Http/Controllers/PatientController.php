@@ -13,10 +13,20 @@ class PatientController extends Controller
 {
     // Show patient dashboard with upcoming and recent appointments
     public function dashboard()
+
     {
         $user = auth()->user();
 
+        // Auto-mark past appointments as completed
+
+        Appointment::where('user_id', $user->id)
+            ->whereDate('appointment_date', '<=', now()->toDateString())
+            ->whereRaw('LOWER(status) != ?', ['cancelled'])
+            ->whereRaw('LOWER(status) != ?', ['completed'])
+            ->update(['status' => 'Completed']);
+
         // Get the next upcoming appointment that is not cancelled
+
         $upcomingAppointments = Appointment::where('user_id', $user->id)
             ->whereDate('appointment_date', '>=', now()->toDateString())
             ->whereRaw('LOWER(status) != ?', ['cancelled'])
@@ -25,12 +35,16 @@ class PatientController extends Controller
             ->take(1)
             ->get();
 
+
         // Get last 5 appointments to show in the table
+
         $appointments = Appointment::where('user_id', $user->id)
             ->orderBy('appointment_date', 'desc')
             ->orderBy('time_slot', 'desc')
             ->take(5)
             ->get();
+
+
 
         return view('pages.patient.dashboard', compact('upcomingAppointments', 'appointments'));
     }
@@ -38,6 +52,15 @@ class PatientController extends Controller
     // Show all appointments for the logged in patient
     public function appointments()
     {
+
+        // Auto-mark past appointments as completed
+        Appointment::where('user_id', auth()->id())
+            ->whereDate('appointment_date', '<=', now()->toDateString())
+            ->whereRaw('LOWER(status) != ?', ['cancelled'])
+            ->whereRaw('LOWER(status) != ?', ['completed'])
+            ->update(['status' => 'Completed']);
+
+
         $appointments = Appointment::where('user_id', auth()->id())
             ->orderBy('appointment_date', 'asc')
             ->orderBy('time_slot', 'asc')
@@ -45,6 +68,7 @@ class PatientController extends Controller
 
         return view('pages.patient.appointments', compact('appointments'));
     }
+
 
     // Show health records for the logged in patient
     public function records()
@@ -57,6 +81,7 @@ class PatientController extends Controller
             ->get();
 
         return view('pages.patient.records', compact('records'));
+
     }
 
     // Show profile page
@@ -65,10 +90,12 @@ class PatientController extends Controller
         $user = Auth::user();
 
         return view('pages.patient.profile', compact('user'));
+
     }
 
     // Update profile info (name, email, phone, address)
     public function updateProfile(Request $request)
+
     {
         $user = Auth::user();
 
@@ -85,6 +112,7 @@ class PatientController extends Controller
         $user->address = $request->address;
         $user->save();
 
+
         return back()->with('success', 'Profile updated successfully.');
     }
 
@@ -94,6 +122,7 @@ class PatientController extends Controller
         $request->validate([
             'current_password' => 'required',
             'new_password'     => 'required|min:6|confirmed',
+
         ]);
 
         $user = Auth::user();
@@ -106,22 +135,24 @@ class PatientController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
+
         return back()->with('success', 'Password updated successfully.');
     }
 
-    // Cancel an appointment 
+    // Cancel an appointment
     public function cancelAppointment($id)
     {
-        
         $appointment = Appointment::where('id', $id)
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
         if ($appointment->status !== 'Completed') {
+
             $appointment->status = 'Cancelled';
             $appointment->save();
         }
 
+        
         return back()->with('success', 'Appointment cancelled successfully.');
     }
 }

@@ -9,6 +9,7 @@ use App\Models\User;
 class ServiceController extends Controller
 {
     // Show all services and departments on the services page
+
     public function index()
     {
         $departments = Department::orderBy('name')->get();
@@ -18,6 +19,7 @@ class ServiceController extends Controller
     }
 
     // Show a single service detail page
+
     public function show($id)
     {
         // Get the service with its department from the database
@@ -28,6 +30,7 @@ class ServiceController extends Controller
 
     // Show a single department detail page
     public function showDepartment($id)
+
     {
         // Get the department from the database
         $department = Department::findOrFail($id);
@@ -35,10 +38,12 @@ class ServiceController extends Controller
         // Get all doctors that belong to this department
         $doctors = User::where('role', 'doctor')
             ->where('department_id', $department->id)
+
             ->get();
 
         // Get all services that belong to this department
         $services = Service::where('department_id', $department->id)->get();
+        
 
         return view('pages.department-details', compact('department', 'doctors', 'services'));
     }

@@ -3,27 +3,30 @@
 @section('content')
 <section class="py-5">
   <div class="container">
-
+<!--      Page heading  -->
     <div class="text-center mb-5">
       <h1 class="fw-bold section-title mb-2">Doctor Profile</h1>
     </div>
 
-    {{-- Doctor Info Card --}}
+     <!-- Doctor Info Card  -->
     <div class="service-card mb-4">
       <div class="p-4 p-md-5">
-        <div class="row align-items-center g-4">
+        <div class="row align-items-center g-4 text-center text-md-start">
 
-          <div class="col-md-3 text-center text-md-start">
+           <!-- Doctor photo  -->
+          <div class="col-12 col-md-3 d-flex justify-content-center justify-content-md-start">
             <img src="{{ asset('images/doctors/' . ($doctor->image ?? 'default.jpg')) }}"
                  alt="{{ $doctor->name }}"
                  class="rounded-4 shadow-sm border"
                  style="width:190px;height:190px;object-fit:cover;">
           </div>
 
-          <div class="col-md-9">
+           <!--  Doctor details  --> 
+          <div class="col-12 col-md-9">
             <h2 class="fw-bold mb-2">{{ $doctor->name }}</h2>
 
-            <div class="d-flex align-items-center gap-3 mb-3">
+             <!--  Department badge and location  --> 
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-start gap-3 mb-3">
               <span class="badge bg-primary">
                 {{ optional($doctor->department)->name ?? 'General' }}
               </span>
@@ -34,12 +37,14 @@
               @endif
             </div>
 
+            <!-- - Phone number  -->
             @if(!empty($doctor->phone))
               <p class="text-muted mb-1">
                 <i class="bi bi-telephone me-2"></i>{{ $doctor->phone }}
               </p>
             @endif
 
+            <!--  Clinic address  -->
             @if(!empty($doctor->address))
               <p class="text-muted mb-0">
                 <i class="bi bi-building me-2"></i>{{ $doctor->address }}
@@ -51,11 +56,12 @@
       </div>
     </div>
 
-    {{-- Availability Card — pulled from doctor_availabilities table --}}
+    <!-- Availability Card  -->
     <div class="service-card mb-4">
       <div class="p-4 p-md-5">
         <h3 class="fw-bold mb-3">Availability</h3>
 
+         <!-- Get availability slots from database ordered by day of week  -->
         @php
           $availabilities = \App\Models\DoctorAvailability::where('doctor_id', $doctor->id)
             ->orderByRaw("FIELD(day,'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')")
@@ -63,21 +69,28 @@
         @endphp
 
         @if($availabilities->count())
-          @foreach($availabilities as $slot)
-            <p class="text-muted mb-2">
-              <strong>{{ $slot->day }}:</strong>
-              {{ \Carbon\Carbon::parse($slot->start_time)->format('g:i A') }} -
-              {{ \Carbon\Carbon::parse($slot->end_time)->format('g:i A') }}
-            </p>
-          @endforeach
+           <!-- Loop through each availability slot  --> 
+          <div class="row g-2">
+            @foreach($availabilities as $slot)
+              <div class="col-12 col-sm-6 col-md-4">
+                <div class="border rounded-3 px-3 py-2 text-muted small">
+                  <strong>{{ $slot->day }}:</strong>
+                  {{ \Carbon\Carbon::parse($slot->start_time)->format('g:i A') }} -
+                  {{ \Carbon\Carbon::parse($slot->end_time)->format('g:i A') }}
+                </div>
+              </div>
+            @endforeach
+          </div>
         @else
+           <!-- - No availability set  --> 
           <p class="text-muted mb-0">No availability set yet.</p>
         @endif
+
       </div>
     </div>
 
-    {{-- Action Buttons --}}
-    <div class="d-flex gap-3">
+     <!--  Action buttons  --> 
+    <div class="d-flex flex-column flex-sm-row gap-3">
       <a href="{{ url('/book-appointment') }}" class="btn btn-primary px-4">
         Book Appointment
       </a>

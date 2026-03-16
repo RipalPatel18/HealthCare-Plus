@@ -10,16 +10,20 @@ class DepartmentController extends Controller
 {
     // Show a single department page with its doctors and services
     public function show($id)
+
     {
         // Get the department from the database
         $department = Department::findOrFail($id);
 
+
         // Get all doctors that belong to this department
         $doctors = User::where('role', 'doctor')
             ->where('department_id', $department->id)
+
             ->get();
 
         // Get all services that belong to this department
+        
         $services = Service::where('department_id', $department->id)->get();
 
         return view('pages.department-details', compact('department', 'doctors', 'services'));
