@@ -7,6 +7,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\StaffController;
 
 /* Web Routes */
 
@@ -20,18 +21,18 @@ Route::get('/dashboard', function () {
     return redirect('/redirect');
 })->middleware(['auth'])->name('dashboard');
 
-// Dynamic pages
+// Find doctor pages
 Route::get('/find-doctor', [DoctorController::class, 'index'])->name('find-doctor');
 Route::get('/doctor-profile/{id}', [DoctorController::class, 'show'])->name('doctor-profile');
 
+// Services and departments
 Route::get('/services', [ServiceController::class, 'index'])->name('services');
-Route::get('/departments/{id}', [ServiceController::class, 'showDepartment'])->name('department.show');
 Route::get('/services/{id}', [ServiceController::class, 'show'])->name('service.show');
+Route::get('/department/{id}', [DepartmentController::class, 'show'])->name('department.show');
 
+// Book appointment
 Route::get('/book-appointment', [AppointmentController::class, 'create'])->name('book-appointment');
 Route::post('/book-appointment', [AppointmentController::class, 'store'])->middleware('auth')->name('book-appointment.store');
-
-Route::get('/department/{id}', [DepartmentController::class, 'show'])->name('department.show');
 
 // Static pages
 Route::get('/contact', function () {
@@ -42,7 +43,7 @@ Route::post('/contact', function () {
     return back()->with('success', 'Your message has been sent successfully!');
 })->name('contact.send');
 
-/* Redirect by role after login */
+// Redirect by role after login
 Route::get('/redirect', function () {
     $role = auth()->user()->role;
 
@@ -99,17 +100,21 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/manage-services', [AdminController::class, 'manageServices'])->name('manage-services');
     Route::post('/manage-services', [AdminController::class, 'createService'])->name('manage-services.create');
     Route::delete('/manage-services/{id}', [AdminController::class, 'deleteService'])->name('manage-services.delete');
+    Route::patch('/manage-services/{id}', [AdminController::class, 'updateService'])->name('manage-services.update');
 
     Route::get('/manage-departments', [AdminController::class, 'manageDepartments'])->name('manage-departments');
     Route::post('/manage-departments', [AdminController::class, 'createDepartment'])->name('manage-departments.create');
     Route::delete('/manage-departments/{id}', [AdminController::class, 'deleteDepartment'])->name('manage-departments.delete');
+    Route::patch('/manage-departments/{id}', [AdminController::class, 'updateDepartment'])->name('manage-departments.update');
 
     Route::get('/delete-patients', [AdminController::class, 'deletePatients'])->name('delete-patients');
-
     Route::delete('/delete-patients/{id}', [AdminController::class, 'deletePatient'])->name('delete-patients.destroy');
+});
 
-    Route::patch('/manage-services/{id}', [AdminController::class, 'updateService'])->name('manage-services.update');
-    Route::patch('/manage-departments/{id}', [AdminController::class, 'updateDepartment'])->name('manage-departments.update');
+/* Staff Routes */
+Route::middleware(['auth', 'role:staff'])->group(function () {
+    Route::get('/staff/appointments', [StaffController::class, 'index'])->name('staff.appointments.index');
+    Route::post('/staff/appointments/{id}/update-status', [StaffController::class, 'updateStatus'])->name('staff.appointments.updateStatus');
 });
 
 require __DIR__ . '/auth.php';
