@@ -20,7 +20,7 @@
 
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
-                   <thead class="table-light">
+                    <thead class="table-light">
                         <tr>
                             <th class="py-3 ps-4">Patient</th>
                             <th class="py-3">Date</th>
@@ -84,7 +84,7 @@
                                 <td colspan="6" class="text-center py-5 text-muted">No appointments found.</td>
                             </tr>
 
-                            
+
                         @endforelse
                     </tbody>
                 </table>

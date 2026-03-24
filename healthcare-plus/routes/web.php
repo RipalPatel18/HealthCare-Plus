@@ -34,6 +34,8 @@ Route::get('/department/{id}', [DepartmentController::class, 'show'])->name('dep
 Route::get('/book-appointment', [AppointmentController::class, 'create'])->name('book-appointment');
 Route::post('/book-appointment', [AppointmentController::class, 'store'])->middleware('auth')->name('book-appointment.store');
 
+
+
 // Static pages
 Route::get('/contact', function () {
     return view('pages.contact');
@@ -68,6 +70,7 @@ Route::middleware(['auth'])->prefix('patient')->name('patient.')->group(function
     Route::post('/profile/update', [PatientController::class, 'updateProfile'])->name('profile.update');
     Route::post('/password/update', [PatientController::class, 'updatePassword'])->name('password.update');
     Route::post('/appointments/{id}/cancel', [PatientController::class, 'cancelAppointment'])->name('appointments.cancel');
+    Route::patch('/appointments/{appointment}/reschedule', [AppointmentController::class, 'reschedule'])->name('appointments.reschedule');
 });
 
 /* Doctor Routes */
