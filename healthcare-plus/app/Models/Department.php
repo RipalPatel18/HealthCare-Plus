@@ -13,7 +13,7 @@ class Department extends Model
 
     public function doctors()
     {
-        return $this->hasMany(User::class)->where('role', 'doctor');
+        return $this->hasMany(User::class, 'department_id')->where('role', 'doctor');
     }
 
     public function services()
